@@ -1,0 +1,307 @@
+[
+  {
+    "ref": "18910d69-d15f-4574-b134-54e25a26d19d",
+    "keyword": "161f05ea01c6daf219b086fc3191f122",
+    "answer": "Hola",
+    "options": {},
+    "from": "573161797912",
+    "refSerialize": "c22e4066d61d81721def9b25d8a397e8"
+  },
+  {
+    "ref": "ans_498cd96d-2ee4-46f9-ae42-1141afd6e604",
+    "keyword": "key_f27ec107-f825-4eae-95de-47ed3f54b664",
+    "answer": "👋 Hola dime qué necesitas para hoy.",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": false
+    },
+    "refSerialize": "34c356b84af5915b4d95c47d14f8a1c6",
+    "from": "573161797912"
+  },
+  {
+    "ref": "ans_bf3d0f48-06ff-440b-8aa7-61dfde9e17da",
+    "keyword": "ans_498cd96d-2ee4-46f9-ae42-1141afd6e604",
+    "answer": "Estos son nuestros servicios:",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "babb877c135032d03034f125c30f6d3e",
+    "from": "573161797912"
+  },
+  {
+    "ref": "314d6ac4-6cae-40d4-816d-6d191e5cb691",
+    "keyword": null,
+    "answer": "1️⃣ confeccion de pantalón a medida",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "delay": 0
+    },
+    "from": "573161797912",
+    "refSerialize": "7efd7b95c5c52a38bbd2f956c3b9ca94"
+  },
+  {
+    "ref": "5eba141c-6df7-4825-9c8a-92d19b0f4cb7",
+    "keyword": null,
+    "answer": "2️⃣ Toda clase de arreglos de sastrería",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "delay": 0
+    },
+    "from": "573161797912",
+    "refSerialize": "8d1c208cb1b350c6759fddae4e8cb348"
+  },
+  {
+    "ref": "d8ca3326-aff8-4df8-9bf6-2c943cb8f64a",
+    "keyword": null,
+    "answer": "3️⃣ Consultas de precios y disponibilidad",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "delay": 0
+    },
+    "from": "573161797912",
+    "refSerialize": "01ec9f2d0d57503d9a19403eced04af9"
+  },
+  {
+    "ref": "0258de39-1683-4e29-b7ff-391e7c23f63b",
+    "keyword": "babb877c135032d03034f125c30f6d3e",
+    "answer": "2",
+    "options": {},
+    "from": "573161797912",
+    "refSerialize": "2294c3d08b53a6effa5df696a15b9d30"
+  },
+  {
+    "ref": "ans_b2b50809-0311-4310-9613-ca4cc7dcf7e6",
+    "keyword": "key_fc9d2d2a-5d63-4022-8ba1-983dd1b04825",
+    "answer": "__call_action__",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "from": "573161797912"
+  },
+  {
+    "ref": "0836b543-4c32-4b0f-aecd-f77713acffbc",
+    "keyword": null,
+    "answer": "Estos son nuestros servicios:\n• Confección de pantalón a medida: Pantalón hecho a la medida del cliente\n• Arreglo de chaqueta: Ajuste y arreglo de chaquetas de todo tipo\n• Cambio de cierre: Cambio de cierre para pantalones, chaquetas, etc.\n• Basta de pantalón: Ajuste de largo de pantalón",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "delay": 0
+    },
+    "from": "573161797912",
+    "refSerialize": "ee4a1039e8d1ff1226401ad49c9d775f"
+  },
+  {
+    "ref": "de0955f5-717e-4afc-b1e5-cf41025534f9",
+    "keyword": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "answer": "3",
+    "options": {},
+    "from": "573161797912",
+    "refSerialize": "7af65864494b12f0f7ef00589f4d3979"
+  },
+  {
+    "ref": "ans_b2b50809-0311-4310-9613-ca4cc7dcf7e6",
+    "keyword": "key_fc9d2d2a-5d63-4022-8ba1-983dd1b04825",
+    "answer": "__call_action__",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "from": "573161797912"
+  },
+  {
+    "ref": "3258c2c9-f81a-4e87-abd0-b9a215ed6a08",
+    "keyword": null,
+    "answer": "Precios de nuestros servicios:\n• Confección de pantalón a medida: $80000\n• Arreglo de chaqueta: $50000\n• Cambio de cierre: $25000\n• Basta de pantalón: $15000\n\n*Disponibilidad:*\n• Lunes: 09:00:00 a 18:30:00\n• Martes: 09:00:00 a 18:30:00\n• Miércoles: 09:00:00 a 18:30:00\n• Jueves: 09:00:00 a 15:00:00\n• Viernes: 09:00:00 a 18:30:00\n• Sábado: 09:00:00 a 18:30:00",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "delay": 0
+    },
+    "from": "573161797912",
+    "refSerialize": "067e865614182276ae353c3b38bd2e67"
+  },
+  {
+    "ref": "8fc17cfa-5b6c-46f5-a647-76fa381d739c",
+    "keyword": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "answer": "1",
+    "options": {},
+    "from": "573161797912",
+    "refSerialize": "290236b1d481a790a200ea6e94b2122a"
+  },
+  {
+    "ref": "ans_b2b50809-0311-4310-9613-ca4cc7dcf7e6",
+    "keyword": "key_fc9d2d2a-5d63-4022-8ba1-983dd1b04825",
+    "answer": "__call_action__",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "from": "573161797912"
+  },
+  {
+    "ref": "21ed2539-8e06-4081-bb28-f9b87fd37481",
+    "keyword": null,
+    "answer": "El valor es 80.000 pesos colombianos.",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "delay": 0
+    },
+    "from": "573161797912",
+    "refSerialize": "4eab705f630c0a968888a289626e1f5a"
+  },
+  {
+    "ref": "ans_b2b50809-0311-4310-9613-ca4cc7dcf7e6",
+    "keyword": "key_fc9d2d2a-5d63-4022-8ba1-983dd1b04825",
+    "answer": "__call_action__",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "from": "573128556510"
+  },
+  {
+    "ref": "0217544e-864f-4753-96d7-5337899309fd",
+    "keyword": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "answer": "Ya casi salen",
+    "options": {},
+    "from": "573128556510",
+    "refSerialize": "e1a796cb151d6492c6be626f930cbbf5"
+  },
+  {
+    "ref": "ans_b2b50809-0311-4310-9613-ca4cc7dcf7e6",
+    "keyword": "key_fc9d2d2a-5d63-4022-8ba1-983dd1b04825",
+    "answer": "__call_action__",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "from": "573128556510"
+  },
+  {
+    "ref": "b3dde504-d1d7-444d-9c31-4d07ccfdf0d9",
+    "keyword": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "answer": "A okey",
+    "options": {},
+    "from": "573128556510",
+    "refSerialize": "b6f44bf8ced502bb32cf3b4f74e71bc7"
+  },
+  {
+    "ref": "ans_b2b50809-0311-4310-9613-ca4cc7dcf7e6",
+    "keyword": "key_fc9d2d2a-5d63-4022-8ba1-983dd1b04825",
+    "answer": "__call_action__",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "from": "573128556510"
+  },
+  {
+    "ref": "30e99db0-c923-4a8e-b425-a4b2871813cf",
+    "keyword": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "answer": "Jehová los traiga con bien",
+    "options": {},
+    "from": "573128556510",
+    "refSerialize": "dafc6dd062e046ff875ac4b525e312f2"
+  },
+  {
+    "ref": "ans_b2b50809-0311-4310-9613-ca4cc7dcf7e6",
+    "keyword": "key_fc9d2d2a-5d63-4022-8ba1-983dd1b04825",
+    "answer": "__call_action__",
+    "options": {
+      "media": null,
+      "buttons": [],
+      "capture": false,
+      "child": null,
+      "delay": 0,
+      "idle": null,
+      "ref": null,
+      "nested": [],
+      "keyword": {},
+      "callback": true
+    },
+    "refSerialize": "e50d369fb58159b5afcdcd1cce9a09c2",
+    "from": "573128556510"
+  }
+]
