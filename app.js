@@ -1,15 +1,39 @@
 // =================== IMPORTS Y CONFIGURACIÓN ===================
 require('dotenv').config();
-const express = require("express");
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+
 const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot');
 const QRPortalWeb = require('@bot-whatsapp/portal');
 const BaileysProvider = require('@bot-whatsapp/provider/baileys');
 const supabase = require('./supabase');
 const JsonFileAdapter = require('@bot-whatsapp/database/json');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const qrcodeTerminal = require('qrcode-terminal'); // Para imprimir en consola y generar ASCII
 
+// Server HTTP para Seenode
 const app = express();
-let ultimoQR = ""; // Aquí guardamos el último QR generado
+const PORT = process.env.PORT || 80;
+
+// =================== UTIL: CAPTURA/LECTURA DE QR ===================
+let lastQrString = ""; // si el provider emite el string del QR lo guardamos aquí
+
+// Busca el PNG de QR que genera el portal (mensajes de log indican *.qr.png)
+function findLatestQrPng() {
+    try {
+        const files = fs.readdirSync(process.cwd())
+            .filter(f => f.toLowerCase().endsWith('qr.png'))
+            .map(f => {
+                const full = path.join(process.cwd(), f);
+                return { full, mtime: fs.statSync(full).mtimeMs };
+            })
+            .sort((a, b) => b.mtime - a.mtime);
+        return files.length ? files[0].full : null;
+    } catch (e) {
+        return null;
+    }
+}
 
 // =================== FUNCIONES SUPABASE ===================
 async function obtenerServicioPorOpcion(opcion) {
@@ -25,7 +49,7 @@ async function obtenerServicioPorOpcion(opcion) {
     return data;
 }
 
-// Configura Gemini
+// =================== GEMINI ===================
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -40,8 +64,6 @@ async function preguntarGemini(mensaje) {
 }
 
 // =================== FLUJOS ===================
-
-// Flujo de bienvenida
 const welcomeFlow = addKeyword(['hola', 'buenas', 'saludos'])
     .addAnswer('👋 Hola dime qué necesitas para hoy.')
     .addAnswer(
@@ -56,7 +78,6 @@ const welcomeFlow = addKeyword(['hola', 'buenas', 'saludos'])
         }
     );
 
-// Flujo para manejar opciones 1, 2, 3
 const opcionesFlow = addKeyword(['1', '2', '3'])
     .addAction(async (ctx, { flowDynamic }) => {
         const opcion = ctx.body.trim();
@@ -80,7 +101,7 @@ const opcionesFlow = addKeyword(['1', '2', '3'])
             const { data: servicios, error: errorServicios } = await supabase
                 .from('servicios')
                 .select('nombre, precio');
-            const { data: disponibilidad } = await supabase
+            const { data: disponibilidad, error: errorDisp } = await supabase
                 .from('disponibilidad')
                 .select('dia, hora_inicio, hora_fin');
             if (errorServicios || !servicios) {
@@ -99,7 +120,6 @@ const opcionesFlow = addKeyword(['1', '2', '3'])
         }
     });
 
-// Flujo para cualquier otra pregunta → Gemini
 const preguntaLibreFlow = addKeyword([/.*/])
     .addAction(async (ctx, { flowDynamic }) => {
         if (!['1', '2', '3'].includes(ctx.body.trim())) {
@@ -115,36 +135,91 @@ const main = async () => {
         opcionesFlow,
         preguntaLibreFlow
     ]);
+
     const adapterProvider = createProvider(BaileysProvider);
     const adapterDB = new JsonFileAdapter();
+
+    // 👉 Si el provider emite el QR en texto, lo imprimimos y guardamos
+    try {
+        adapterProvider.on?.('qr', (qr) => {
+            lastQrString = qr || '';
+            console.log('⚡ Escanea este QR (también disponible en /qr y /qr-text):');
+            try {
+                qrcodeTerminal.generate(qr, { small: true });
+            } catch (e) {
+                console.log(qr);
+            }
+        });
+    } catch (_) {
+        // Si la versión del provider no emite el evento, simplemente seguimos;
+        // el Portal generará el PNG y lo servimos por /qr.
+    }
 
     createBot({
         flow: adapterFlow,
         provider: adapterProvider,
-        database: adapterDB,
+        database: adapterDB, // Necesario para historial
     });
 
-    // Capturamos el QR cuando se genera
-    QRPortalWeb({ onScan: (qr) => { ultimoQR = qr; } });
+    // Mantiene compatibilidad con tu flujo actual + genera archivo *.qr.png
+    QRPortalWeb();
 };
 
-// =================== EXPRESS SERVER ===================
-app.get("/", (req, res) => {
-    res.send("✅ Bot de WhatsApp corriendo correctamente.");
+// =================== ENDPOINTS HTTP ===================
+
+// Ping
+app.get('/', (_req, res) => {
+    res.send(`
+        <h2>✅ Bot WhatsApp corriendo</h2>
+        <ul>
+          <li><a href="/qr">/qr</a> — QR como imagen (PNG generado por el portal)</li>
+          <li><a href="/qr-text">/qr-text</a> — QR en ASCII (si el provider lo emite)</li>
+          <li><a href="/download-bot">/download-bot</a> — Descargar este app.js</li>
+        </ul>
+    `);
 });
 
-// Endpoint para mostrar el QR en texto
-app.get("/qr", (req, res) => {
-    if (!ultimoQR) {
-        return res.send("⚠️ QR aún no generado, revisa en unos segundos.");
+// QR como imagen (sirve el último *.qr.png generado)
+app.get('/qr', (req, res) => {
+    const file = findLatestQrPng();
+    if (file && fs.existsSync(file)) {
+        return res.sendFile(file);
     }
-    res.send(`<h1>Escanea este QR en WhatsApp</h1><pre>${ultimoQR}</pre>`);
+    if (lastQrString) {
+        // fallback: mostramos el ASCII si tenemos el string pero aún no hay PNG
+        return res.send(`<pre>${qrcodeToAscii(lastQrString)}</pre>`);
+    }
+    res.status(503).send('⚠️ Aún no hay QR generado. Espera unos segundos y recarga.');
 });
 
-// Iniciar servidor
-const PORT = process.env.PORT || 80;
-app.listen(PORT, "0.0.0.0", () => {
-    console.log(`✅ Servidor escuchando en http://0.0.0.0:${PORT}`);
+// QR en ASCII (si el provider nos dio el string)
+app.get('/qr-text', (req, res) => {
+    if (!lastQrString) {
+        return res.status(503).send('⚠️ Aún no hay QR en memoria.');
+    }
+    res.type('text/plain').send(qrcodeToAscii(lastQrString));
 });
 
+// Descargar el propio archivo del bot
+app.get('/download-bot', (req, res) => {
+    res.download(__filename, 'bot.js');
+});
+
+// Util: genera ASCII (string) con qrcode-terminal
+function qrcodeToAscii(qr) {
+    try {
+        let ascii = '';
+        qrcodeTerminal.generate(qr, { small: true }, (q) => { ascii = q; });
+        return ascii || qr;
+    } catch {
+        return qr;
+    }
+}
+
+// Iniciar servidor HTTP en 0.0.0.0:80 (requisito de Seenode)
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`✅ Servidor HTTP escuchando en http://0.0.0.0:${PORT}`);
+});
+
+// Levantar el bot
 main();
