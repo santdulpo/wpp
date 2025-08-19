@@ -1,5 +1,6 @@
- // =================== IMPORTS Y CONFIGURACIÓN ===================
+// =================== IMPORTS Y CONFIGURACIÓN ===================
 require('dotenv').config();
+const express = require("express");
 const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot');
 const QRPortalWeb = require('@bot-whatsapp/portal');
 const BaileysProvider = require('@bot-whatsapp/provider/baileys');
@@ -7,8 +8,8 @@ const supabase = require('./supabase');
 const JsonFileAdapter = require('@bot-whatsapp/database/json');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// Aquí puedes agregar tus nuevas funciones y flujos desde cero
-
+const app = express();
+let ultimoQR = ""; // Aquí guardamos el último QR generado
 
 // =================== FUNCIONES SUPABASE ===================
 async function obtenerServicioPorOpcion(opcion) {
@@ -64,7 +65,6 @@ const opcionesFlow = addKeyword(['1', '2', '3'])
             return;
         }
         if (opcion === '2') {
-            // Consultar todos los servicios (nombre y descripcion)
             const { data: servicios, error } = await supabase
                 .from('servicios')
                 .select('nombre, descripcion');
@@ -77,11 +77,10 @@ const opcionesFlow = addKeyword(['1', '2', '3'])
             return;
         }
         if (opcion === '3') {
-            // Consultar precios de todos los servicios y disponibilidad
             const { data: servicios, error: errorServicios } = await supabase
                 .from('servicios')
                 .select('nombre, precio');
-            const { data: disponibilidad, error: errorDisp } = await supabase
+            const { data: disponibilidad } = await supabase
                 .from('disponibilidad')
                 .select('dia, hora_inicio, hora_fin');
             if (errorServicios || !servicios) {
@@ -117,17 +116,35 @@ const main = async () => {
         preguntaLibreFlow
     ]);
     const adapterProvider = createProvider(BaileysProvider);
-    const adapterDB = new JsonFileAdapter(); // Para historial de chats
+    const adapterDB = new JsonFileAdapter();
 
     createBot({
         flow: adapterFlow,
         provider: adapterProvider,
-        database: adapterDB, // Necesario para historial
+        database: adapterDB,
     });
 
-    QRPortalWeb();
+    // Capturamos el QR cuando se genera
+    QRPortalWeb({ onScan: (qr) => { ultimoQR = qr; } });
 };
 
+// =================== EXPRESS SERVER ===================
+app.get("/", (req, res) => {
+    res.send("✅ Bot de WhatsApp corriendo correctamente.");
+});
 
+// Endpoint para mostrar el QR en texto
+app.get("/qr", (req, res) => {
+    if (!ultimoQR) {
+        return res.send("⚠️ QR aún no generado, revisa en unos segundos.");
+    }
+    res.send(`<h1>Escanea este QR en WhatsApp</h1><pre>${ultimoQR}</pre>`);
+});
+
+// Iniciar servidor
+const PORT = process.env.PORT || 80;
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`✅ Servidor escuchando en http://0.0.0.0:${PORT}`);
+});
 
 main();
