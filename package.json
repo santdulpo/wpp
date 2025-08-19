@@ -22,6 +22,7 @@
         "dotenv": "^17.2.1",
         "natural": "^8.1.0",
         "node-fetch": "^3.3.2",
+        "qrcode-terminal": "^0.12.0",
         "wa-sticker-formatter": "4.4.4"
     },
     "devDependencies": {
