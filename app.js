@@ -2,14 +2,12 @@
 // =================== IMPORTS Y CONFIGURACIÓN ===================
 require('dotenv').config();
 const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot');
-const QRPortalWeb = require('@bot-whatsapp/portal');
+// ❌ No usar QRPortalWeb en Seenode
 const BaileysProvider = require('@bot-whatsapp/provider/baileys');
 const supabase = require('./supabase');
 const JsonFileAdapter = require('@bot-whatsapp/database/json');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-
-// Aquí puedes agregar tus nuevas funciones y flujos desde cero
-
+const QRCode = require('qrcode-terminal');
 
 // =================== FUNCIONES SUPABASE ===================
 async function obtenerServicioPorOpcion(opcion) {
@@ -65,7 +63,6 @@ const opcionesFlow = addKeyword(['1', '2', '3'])
             return;
         }
         if (opcion === '2') {
-            // Consultar todos los servicios (nombre y descripcion)
             const { data: servicios, error } = await supabase
                 .from('servicios')
                 .select('nombre, descripcion');
@@ -78,7 +75,6 @@ const opcionesFlow = addKeyword(['1', '2', '3'])
             return;
         }
         if (opcion === '3') {
-            // Consultar precios de todos los servicios y disponibilidad
             const { data: servicios, error: errorServicios } = await supabase
                 .from('servicios')
                 .select('nombre, precio');
@@ -117,25 +113,24 @@ const main = async () => {
         opcionesFlow,
         preguntaLibreFlow
     ]);
+
     const adapterProvider = createProvider(BaileysProvider);
-    const adapterDB = new JsonFileAdapter(); // Para historial de chats
+
+    // 👉 Mostrar QR en consola (Seenode compatible)
+    adapterProvider.on('qr', (qr) => {
+        console.log('⚡ Escanea este QR para vincular tu WhatsApp ⚡');
+        QRCode.generate(qr, { small: true });
+    });
+
+    const adapterDB = new JsonFileAdapter();
 
     createBot({
         flow: adapterFlow,
         provider: adapterProvider,
-        database: adapterDB, // Necesario para historial
+        database: adapterDB,
     });
 
-    QRPortalWeb();
+    // ❌ Quitar QRPortalWeb(); → No funciona en Seenode
 };
-
-
-
-const qrcode = require('qrcode-terminal');
-
-client.on('qr', (qr) => {
-    qrcode.generate(qr, { small: true }); // Muestra el QR en la consola
-});
-
 
 main();
