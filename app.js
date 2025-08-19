@@ -129,4 +129,13 @@ const main = async () => {
     QRPortalWeb();
 };
 
+
+
+const qrcode = require('qrcode-terminal');
+
+client.on('qr', (qr) => {
+    qrcode.generate(qr, { small: true }); // Muestra el QR en la consola
+});
+
+
 main();
