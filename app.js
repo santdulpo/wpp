@@ -1,4 +1,4 @@
-este es mi bot // =================== IMPORTS Y CONFIGURACIÓN ===================
+ // =================== IMPORTS Y CONFIGURACIÓN ===================
 require('dotenv').config();
 const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot');
 const QRPortalWeb = require('@bot-whatsapp/portal');
